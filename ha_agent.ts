@@ -27,7 +27,6 @@ class HomeAssistantAgent {
 
     private handleOpen(): void {
         console.log('Connected to Home Assistant');
-        this.authenticate();
     }
 
     private handleMessage(message: string): void {
@@ -37,9 +36,19 @@ class HomeAssistantAgent {
             case 'event':
                 this.handleEvent(data.event);
                 break;
+            case 'auth_required':
+                console.log('Start authentication');
+                this.authenticate();
+                break;
             case 'auth_ok':
-                console.log('Authenticated successfully');
-                this.subscribeToEvents();
+                    console.log('Authenticated successfully');
+                    this.subscribeToEvents();
+                    break;
+            case 'result':
+                console.log(data.success ? "Succeeded" : "Failed");
+                if (data.result != null) {
+                    console.log('Result: ' + data.result);
+                }
                 break;
             case 'auth_invalid':
                 console.error('Authentication failed:', data.message);
