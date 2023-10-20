@@ -2,9 +2,10 @@
   "name": "ha-manager",
   "version": "1.0.0",
   "description": "",
-  "main": "ha_agent.js",
+  "main": "ha_agent.ts",
   "scripts": {
-    "test": "node dist/ha_agent.js ./dist/event_handlers/example_event_handler.js"
+    "start": "node ./dist/ha_agent.js",
+    "test": "node ./dist/ha_agent.js ./dist/example_event_handler.js"
   },
   "keywords": [],
   "author": "",
