@@ -1,3 +1,5 @@
+import type { HomeAssistantInstance } from "./home_asistant_instance";
+
 type State = {
     entity_id: string;
     state: string;
@@ -43,6 +45,7 @@ export type IosBecameActiveEvent = IosActivityEvent;
 export type IosEnteredBackgroundEvent = IosActivityEvent;
 
 export class EventHandler {
+    async initialize(instance: HomeAssistantInstance): Promise<void> {}
     handleStateChanged(time_fired: string, event: StateChangedEvent): void {}
     handleCallService(time_fired: string, event: CallServiceEvent): void {}
     handleAutomationTriggered(time_fired: string, event: AutomationTriggeredEvent): void {}

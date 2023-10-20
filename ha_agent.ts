@@ -1,18 +1,24 @@
 import path from 'path';
 import WebSocket from 'ws';
 import config from './config';
+import { HomeAssistantInstance } from './home_asistant_instance'
 import { Event, EventHandler } from './event_handler';
 
 class HomeAssistantAgent {
     private ws: WebSocket;
     private eventHandler: EventHandler;
-    private readonly haURL: string;
+    private readonly haHost: string;
+    private readonly haWsUrl: string;
+    private readonly haHttpUrl: string;
     private readonly accessToken: string;
 
     constructor(eventHandlerClass: typeof EventHandler) {
-        this.haURL = `ws://${config.host}/api/websocket`;
+        this.haHost = config.host;
         this.accessToken = config.token;
-        this.ws = new WebSocket(this.haURL);
+
+        this.haWsUrl = `ws://${this.haHost}/api/websocket`;
+        this.haHttpUrl = `http://${this.haHost}`;
+        this.ws = new WebSocket(this.haWsUrl);
         this.eventHandler = new eventHandlerClass();
 
         this.setupEventListeners();
@@ -41,9 +47,9 @@ class HomeAssistantAgent {
                 this.authenticate();
                 break;
             case 'auth_ok':
-                    console.log('Authenticated successfully');
-                    this.subscribeToEvents();
-                    break;
+                console.log('Authenticated successfully');
+                this.initialize();
+                break;
             case 'result':
                 console.log(data.success ? "Succeeded" : "Failed");
                 if (data.result != null) {
@@ -97,6 +103,15 @@ class HomeAssistantAgent {
             type: 'auth',
             access_token: this.accessToken
         }));
+    }
+
+    private initialize(): void {
+        this.eventHandler.initialize(new HomeAssistantInstance(
+            this.haHttpUrl,
+            this.accessToken
+        )).then(() => {
+            this.subscribeToEvents()
+        });
     }
 
     private subscribeToEvents(): void {
