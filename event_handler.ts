@@ -15,14 +15,6 @@ type IosActivityEvent = {
     sourceDevicePermanentID: string;
 }
 
-export type Event = {
-    event_type: string;
-    data: any;
-    origin: string;
-    time_fired: string;
-    context: any;
-}
-
 export type StateChangedEvent = {
     entity_id: string;
     old_state: State;
@@ -45,11 +37,11 @@ export type IosBecameActiveEvent = IosActivityEvent;
 export type IosEnteredBackgroundEvent = IosActivityEvent;
 
 export class EventHandler {
-    async initialize(instance: HomeAssistantInstance): Promise<void> {}
-    handleStateChanged(time_fired: string, event: StateChangedEvent): void {}
-    handleCallService(time_fired: string, event: CallServiceEvent): void {}
-    handleAutomationTriggered(time_fired: string, event: AutomationTriggeredEvent): void {}
-    handleIosBecameActive(time_fired: string, event: IosBecameActiveEvent): void {}
-    handleIosEnteredBackground(time_fired: string, event: IosEnteredBackgroundEvent): void {}
-    handleUnknownEvent(event: any): void {}
+    async initialize(instance: HomeAssistantInstance) { }
+    async handleStateChanged(instance: HomeAssistantInstance, time_fired: string, event: StateChangedEvent) { }
+    async handleCallService(instance: HomeAssistantInstance, time_fired: string, event: CallServiceEvent) { }
+    async handleAutomationTriggered(instance: HomeAssistantInstance, time_fired: string, event: AutomationTriggeredEvent) { }
+    async handleIosBecameActive(instance: HomeAssistantInstance, time_fired: string, event: IosBecameActiveEvent) { }
+    async handleIosEnteredBackground(instance: HomeAssistantInstance, time_fired: string, event: IosEnteredBackgroundEvent) { }
+    async handleUnknownEvent(instance: HomeAssistantInstance, event: any) { }
 }

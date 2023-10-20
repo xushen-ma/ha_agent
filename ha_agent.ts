@@ -2,11 +2,20 @@ import path from 'path';
 import WebSocket from 'ws';
 import config from './config';
 import { HomeAssistantInstance } from './home_asistant_instance'
-import { Event, EventHandler } from './event_handler';
+import { EventHandler } from './event_handler';
+
+type Event = {
+    event_type: string;
+    data: any;
+    origin: string;
+    time_fired: string;
+    context: any;
+}
 
 class HomeAssistantAgent {
     private ws: WebSocket;
     private eventHandler: EventHandler;
+    private homeAssistantInstance: HomeAssistantInstance | undefined;
     private readonly haHost: string;
     private readonly haWsUrl: string;
     private readonly haHttpUrl: string;
@@ -67,25 +76,29 @@ class HomeAssistantAgent {
     }
 
     public handleEvent(event: Event): void {
-        const {event_type} = event;
+        if (!this.homeAssistantInstance) {
+            return;
+        }
+
+        const { event_type } = event;
         switch (event_type) {
             case 'state_changed':
-                this.eventHandler.handleStateChanged(event.time_fired, event.data);
+                this.eventHandler.handleStateChanged(this.homeAssistantInstance, event.time_fired, event.data);
                 break;
             case 'call_service':
-                this.eventHandler.handleCallService(event.time_fired, event.data);
+                this.eventHandler.handleCallService(this.homeAssistantInstance, event.time_fired, event.data);
                 break;
             case 'automation_triggered':
-                this.eventHandler.handleAutomationTriggered(event.time_fired, event.data);
+                this.eventHandler.handleAutomationTriggered(this.homeAssistantInstance, event.time_fired, event.data);
                 break;
             case 'ios.became_active':
-                this.eventHandler.handleIosBecameActive(event.time_fired, event.data);
+                this.eventHandler.handleIosBecameActive(this.homeAssistantInstance, event.time_fired, event.data);
                 break;
             case 'ios.entered_background':
-                this.eventHandler.handleIosEnteredBackground(event.time_fired, event.data);
+                this.eventHandler.handleIosEnteredBackground(this.homeAssistantInstance, event.time_fired, event.data);
                 break;
             default:
-                this.eventHandler.handleUnknownEvent(event);
+                this.eventHandler.handleUnknownEvent(this.homeAssistantInstance, event);
                 break;
         }
     }
@@ -106,10 +119,8 @@ class HomeAssistantAgent {
     }
 
     private initialize(): void {
-        this.eventHandler.initialize(new HomeAssistantInstance(
-            this.haHttpUrl,
-            this.accessToken
-        )).then(() => {
+        this.homeAssistantInstance = new HomeAssistantInstance(this.haHttpUrl, this.accessToken);
+        this.eventHandler.initialize(this.homeAssistantInstance).then(() => {
             this.subscribeToEvents()
         });
     }

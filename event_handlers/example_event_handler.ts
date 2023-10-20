@@ -12,7 +12,7 @@ export default class ExampleEventHandler extends EventHandler {
     /**
      * Overrides the handleEvent method from the parent EventHandler class.
      */
-    handleStateChanged(time_fired: string, event: StateChangedEvent) {
+    async handleStateChanged(instance: HomeAssistantInstance, time_fired: string, event: StateChangedEvent) {
         console.log("Example handling for the event:", event);
     }
 }

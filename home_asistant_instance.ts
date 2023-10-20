@@ -57,7 +57,7 @@ class UnexpectedStatusError extends Error {
     }
 }
 
-class ResponseTypeError extends Error {
+export class ResponseTypeError extends Error {
     data: any;
 
     constructor(data: any) {
