@@ -1,3 +1,4 @@
+import { EventSubscriptions } from "./event_subscriptions";
 import type { HomeAssistantInstance } from "./home_asistant_instance";
 
 type State = {
@@ -37,7 +38,8 @@ export type IosBecameActiveEvent = IosActivityEvent;
 export type IosEnteredBackgroundEvent = IosActivityEvent;
 
 export class EventHandler {
-    async initialize(instance: HomeAssistantInstance) { }
+    // When returns nothing, the handler will not run
+    async initialize(instance: HomeAssistantInstance): Promise<EventSubscriptions | void> { }
     async handleStateChanged(instance: HomeAssistantInstance, time_fired: string, event: StateChangedEvent) { }
     async handleCallService(instance: HomeAssistantInstance, time_fired: string, event: CallServiceEvent) { }
     async handleAutomationTriggered(instance: HomeAssistantInstance, time_fired: string, event: AutomationTriggeredEvent) { }
@@ -45,3 +47,5 @@ export class EventHandler {
     async handleIosEnteredBackground(instance: HomeAssistantInstance, time_fired: string, event: IosEnteredBackgroundEvent) { }
     async handleUnknownEvent(instance: HomeAssistantInstance, event: any) { }
 }
+export { EventSubscriptions };
+
