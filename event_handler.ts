@@ -40,12 +40,12 @@ export type IosEnteredBackgroundEvent = IosActivityEvent;
 export class EventHandler {
     // When returns nothing, the handler will not run
     async initialize(instance: HomeAssistantInstance): Promise<EventSubscriptions | void> { }
-    async handleStateChanged(instance: HomeAssistantInstance, time_fired: string, event: StateChangedEvent) { }
-    async handleCallService(instance: HomeAssistantInstance, time_fired: string, event: CallServiceEvent) { }
-    async handleAutomationTriggered(instance: HomeAssistantInstance, time_fired: string, event: AutomationTriggeredEvent) { }
-    async handleIosBecameActive(instance: HomeAssistantInstance, time_fired: string, event: IosBecameActiveEvent) { }
-    async handleIosEnteredBackground(instance: HomeAssistantInstance, time_fired: string, event: IosEnteredBackgroundEvent) { }
-    async handleUnknownEvent(instance: HomeAssistantInstance, event: any) { }
+    handleStateChanged(instance: HomeAssistantInstance, time_fired: string, event: StateChangedEvent) { }
+    handleCallService(instance: HomeAssistantInstance, time_fired: string, event: CallServiceEvent) { }
+    handleAutomationTriggered(instance: HomeAssistantInstance, time_fired: string, event: AutomationTriggeredEvent) { }
+    handleIosBecameActive(instance: HomeAssistantInstance, time_fired: string, event: IosBecameActiveEvent) { }
+    handleIosEnteredBackground(instance: HomeAssistantInstance, time_fired: string, event: IosEnteredBackgroundEvent) { }
+    handleUnknownEvent(instance: HomeAssistantInstance, event: any) { }
 }
 export { EventSubscriptions };
 
