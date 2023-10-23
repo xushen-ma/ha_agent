@@ -94,29 +94,29 @@ class HomeAssistantAgent {
             case 'call_service':
                 const callServiceEvent = event.data as CallServiceEvent;
                 if (this.eventSubscriptions.call_service.isSubscribed(callServiceEvent.service)) {
-                    this.eventHandler.handleCallService(this.homeAssistantInstance, event.time_fired, callServiceEvent);
+                    this.eventHandler.handleCallService(instance, event.time_fired, callServiceEvent);
                 }
                 break;
             case 'automation_triggered':
                 const automationTriggeredEvent = event.data as AutomationTriggeredEvent;
                 if (this.eventSubscriptions.automation_triggered.isSubscribed(automationTriggeredEvent.entity_id)) {
-                    this.eventHandler.handleAutomationTriggered(this.homeAssistantInstance, event.time_fired, automationTriggeredEvent);
+                    this.eventHandler.handleAutomationTriggered(instance, event.time_fired, automationTriggeredEvent);
                 }
                 break;
             case 'ios.became_active':
                 const iosBecameActiveEvent = event.data as IosBecameActiveEvent;
                 if (this.eventSubscriptions.automation_triggered.isSubscribed(iosBecameActiveEvent.sourceDeviceName)) {
-                    this.eventHandler.handleIosBecameActive(this.homeAssistantInstance, event.time_fired, iosBecameActiveEvent);
+                    this.eventHandler.handleIosBecameActive(instance, event.time_fired, iosBecameActiveEvent);
                 }
                 break;
             case 'ios.entered_background':
                 const iosEnteredBackgroundEvent = event.data as IosEnteredBackgroundEvent;
                 if (this.eventSubscriptions.automation_triggered.isSubscribed(iosEnteredBackgroundEvent.sourceDeviceName)) {
-                    this.eventHandler.handleIosEnteredBackground(this.homeAssistantInstance, event.time_fired, iosEnteredBackgroundEvent);
+                    this.eventHandler.handleIosEnteredBackground(instance, event.time_fired, iosEnteredBackgroundEvent);
                 }
                 break;
             default:
-                this.eventHandler.handleUnknownEvent(this.homeAssistantInstance, event);
+                this.eventHandler.handleUnknownEvent(instance, event);
                 break;
         }
     }
